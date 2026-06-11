@@ -1,1 +1,8 @@
-
+# app-ads.txt for FocusIsle
+# This file authorizes ad sellers for this application.
+# Format: <ad_system_domain>, <publisher_account_id>, <relationship>, <certification_authority_id>
+#
+# Example:
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+#
+# Add your ad platform entries below when you connect ad networks.
