@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusIsle - Pomodoro Timer & Task Manager</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif; color: #1d1d1f; background: #fff; line-height: 1.5; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+.fade-in { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 48px; background: rgba(255,255,255,0.72); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: space-between; padding: 0 max(24px, calc((100% - 980px) / 2)); }
+.nav-logo { font-weight: 700; font-size: 17px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+.nav-logo .logo-icon { width: 28px; height: 28px; border-radius: 7px; background: #1d1d1f; display: flex; align-items: center; justify-content: center; color: #5B7FFF; font-size: 14px; font-weight: 800; }
+.nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+.nav-links a { font-size: 12px; color: #86868b; transition: color 0.2s; }
+.nav-links a:hover { color: #1d1d1f; }
+
+.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 24px 80px; position: relative; background: #fff; }
+.hero-eyebrow { font-size: 17px; font-weight: 600; color: #5B7FFF; letter-spacing: -0.01em; margin-bottom: 12px; }
+.hero h1 { font-size: clamp(40px, 7vw, 80px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; max-width: 800px; margin-bottom: 20px; }
+.hero-sub { font-size: clamp(17px, 2.2vw, 21px); color: #86868b; max-width: 540px; margin-bottom: 12px; line-height: 1.5; font-weight: 400; }
+.hero::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent); }
+
+.section { padding: 120px max(24px, calc((100% - 980px) / 2)); position: relative; overflow: hidden; }
+.section-gray { background: #fafafa; }
+.section-dark { background: #1d1d1f; color: #f5f5f7; }
+.section-dark .feature-label { color: #5B7FFF; }
+.section-dark .feature-desc { color: #a1a1a6; }
+.feature-inner { max-width: 980px; margin: 0 auto; }
+.feature-label { font-size: 14px; font-weight: 600; color: #5B7FFF; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+.feature-title { font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 24px; max-width: 700px; }
+.feature-desc { font-size: 17px; color: #86868b; line-height: 1.7; max-width: 520px; }
+.feature-accent { width: 48px; height: 3px; background: #5B7FFF; border-radius: 2px; margin-top: 32px; opacity: 0.4; }
+.feature-center { text-align: center; }
+.feature-center .feature-title { max-width: 600px; margin-left: auto; margin-right: auto; }
+.feature-center .feature-desc { max-width: 500px; margin-left: auto; margin-right: auto; }
+.feature-center .feature-accent { margin-left: auto; margin-right: auto; }
+
+.divider { max-width: 980px; margin: 0 auto; padding: 0 max(24px, calc((100% - 980px) / 2)); }
+.divider::after { content: ''; display: block; height: 1px; background: rgba(0,0,0,0.06); }
+.section-dark .divider::after { background: rgba(255,255,255,0.06); }
+
+.cta { text-align: center; padding: 160px max(24px, calc((100% - 980px) / 2)); position: relative; overflow: hidden; }
+.cta-title { font-size: clamp(36px, 6vw, 64px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 16px; }
+.cta-sub { font-size: clamp(16px, 2vw, 19px); color: #86868b; margin-bottom: 8px; }
+
+footer { border-top: 1px solid rgba(0,0,0,0.08); padding: 20px max(24px, calc((100% - 980px) / 2)); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #86868b; }
+footer a { color: #86868b; transition: color 0.2s; }
+footer a:hover { color: #1d1d1f; }
+.footer-links { display: flex; gap: 24px; }
+
+@media (max-width: 768px) { .section { padding: 100px 24px; } .hero { padding: 140px 24px 80px; } .feature-title { max-width: 100%; } footer { flex-direction: column; text-align: center; } .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<nav>
+<a href="#" class="nav-logo">
+<div class="logo-icon">F</div>
+FocusIsle
+</a>
+<ul class="nav-links">
+<li><a href="#timer">Timer</a></li>
+<li><a href="#tasks">Tasks</a></li>
+<li><a href="#journal">Journal</a></li>
+<li><a href="#stats">Statistics</a></li>
+</ul>
+</nav>
+
+<section class="hero" id="hero">
+<p class="hero-eyebrow fade-in">Introducing FocusIsle</p>
+<h1 class="fade-in">Stay focused.<br>Get things done.</h1>
+<p class="hero-sub fade-in">A Pomodoro timer combined with task management, focus journal, and goal tracking. Everything you need to build lasting productivity habits.</p>
+</section>
+
+<div class="divider"></div>
+<section class="section" id="timer">
+<div class="feature-inner fade-in">
+<p class="feature-label">Pomodoro Timer</p>
+<h2 class="feature-title">Your flow,<br>your rules.</h2>
+<p class="feature-desc">Focus Session, Short Break, or Long Break — switch freely. Pause and resume anytime. Skip breaks when you're on a roll, or enable continuous mode for unstoppable focus sessions. Customizable durations to match your rhythm.</p>
+<div class="feature-accent"></div>
+</div>
+</section>
+
+<div class="divider"></div>
+<section class="section section-gray" id="tasks">
+<div class="feature-inner fade-in">
+<p class="feature-label">Task Management</p>
+<h2 class="feature-title">Organize everything.<br>One task at a time.</h2>
+<p class="feature-desc">Group tasks into projects. Set priorities, due dates, and detailed notes. Build habits with recurring tasks. Break big goals into sub-tasks and checklists. Your to-do list, finally under control.</p>
+<div class="feature-accent"></div>
+</div>
+</section>
+
+<div class="divider"></div>
+<section class="section" id="journal">
+<div class="feature-inner fade-in">
+<p class="feature-label">Focus Journal</p>
+<h2 class="feature-title">Remember what<br>you accomplished.</h2>
+<p class="feature-desc">After each focus session, jot down your thoughts and reflections. Over time, your focus diary becomes a powerful record of progress. Look back and see how far you've come — one session at a time.</p>
+<div class="feature-accent"></div>
+</div>
+</section>
+
+<div class="divider"></div>
+<section class="section section-dark" id="stats">
+<div class="feature-inner feature-center fade-in">
+<p class="feature-label">Statistics & Goals</p>
+<h2 class="feature-title">Every minute,<br>visualized.</h2>
+<p class="feature-desc">Daily, weekly, and monthly reports. Gantt chart and trend charts to see your progress. Calendar view for a quick overview. Set daily focus goals and track your streaks to stay motivated.</p>
+<div class="feature-accent" style="background: #5B7FFF;"></div>
+</div>
+</section>
+
+<div class="divider"></div>
+<section class="cta" id="cta">
+<h2 class="cta-title fade-in">Start focusing<br>better today.</h2>
+<p class="cta-sub fade-in">Free to download on the App Store.</p>
+</section>
+
+<footer>
+<p>&copy; 2026 FocusIsle. All rights reserved.</p>
+<div class="footer-links">
+<a href="app_info/privacy_policy.html">Privacy Policy</a>
+<a href="mailto:support@timesleap.com">Contact Us</a>
+</div>
+</footer>
+
+<script>
+var observer = new IntersectionObserver(function(entries) {
+entries.forEach(function(entry) { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+</script>
+</body>
+</html>
