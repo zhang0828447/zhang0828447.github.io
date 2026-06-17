@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breathly: Deep Breathing — Breathe with ease, find your calm</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #fafafa;
+    --bg-dark: #0a1628;
+    --text: #1d1d1f;
+    --text-soft: #6e6e73;
+    --text-faint: #86868b;
+    --accent: #0071e3;
+    --border: #d2d2d7;
+    --dot-color: rgba(0, 0, 0, 0.05);
+    --ring-blue: #5dd3ff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-brand .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--ring-blue);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    box-shadow: 0 0 12px rgba(93, 211, 255, 0.6);
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 0.6; }
+  @media (max-width: 600px) {
+    .nav-links { gap: 18px; }
+    .nav-links a { font-size: 12px; }
+  }
+
+  .hero {
+    padding: 120px 24px 100px;
+    text-align: center;
+    background: var(--bg);
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+    background-size: 24px 24px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 8vw, 88px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    background: linear-gradient(180deg, #1d1d1f 0%, #434348 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .tagline {
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 300;
+    color: var(--text-soft);
+    letter-spacing: -0.01em;
+    max-width: 640px;
+    margin: 0 auto 48px;
+    line-height: 1.4;
+  }
+  .breath-ring {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(93, 211, 255, 0.3) 0%, rgba(93, 211, 255, 0.05) 70%, transparent 100%);
+    border: 1.5px solid rgba(93, 211, 255, 0.4);
+    box-shadow: 0 0 80px rgba(93, 211, 255, 0.25);
+    animation: breathe 8s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(0.85); box-shadow: 0 0 60px rgba(93, 211, 255, 0.2); }
+    50% { transform: scale(1.05); box-shadow: 0 0 100px rgba(93, 211, 255, 0.35); }
+  }
+  .hero-meta {
+    font-size: 13px;
+    color: var(--text-faint);
+    letter-spacing: 0.02em;
+  }
+
+  section {
+    padding: 100px 24px;
+    text-align: center;
+  }
+  .section-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .section-sub {
+    font-size: clamp(17px, 2vw, 21px);
+    font-weight: 300;
+    color: var(--text-soft);
+    max-width: 640px;
+    margin: 0 auto 64px;
+    line-height: 1.5;
+  }
+
+  .patterns {
+    background: var(--bg-alt);
+    background-image:
+      repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0,0,0,0.012) 40px, rgba(0,0,0,0.012) 41px);
+  }
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .pattern-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 36px 32px;
+    text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .pattern-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  }
+  .pattern-card .pattern-rhythm {
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .pattern-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .pattern-card p {
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+  @media (max-width: 600px) {
+    .pattern-grid { grid-template-columns: 1fr; }
+  }
+
+  .scene-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .scene-card {
+    padding: 40px 20px;
+    border-radius: 18px;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  .scene-card:hover { transform: translateY(-4px); }
+  .scene-card .scene-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+  }
+  .scene-card h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .scene-card p {
+    font-size: 13px;
+    color: var(--text-soft);
+    font-weight: 300;
+    line-height: 1.45;
+  }
+  .scene-sleep { background: linear-gradient(160deg, #1a2440 0%, #2a2055 100%); color: #fff; }
+  .scene-sleep p { color: rgba(255,255,255,0.7); }
+  .scene-sleep .scene-icon { background: rgba(255,255,255,0.1); }
+  .scene-relax { background: linear-gradient(160deg, #e8f4ed 0%, #c5dfd0 100%); }
+  .scene-relax .scene-icon { background: rgba(168, 197, 176, 0.3); }
+  .scene-focus { background: linear-gradient(160deg, #e8eef5 0%, #b8c5d6 100%); }
+  .scene-focus .scene-icon { background: rgba(150, 170, 200, 0.3); }
+  .scene-energy { background: linear-gradient(160deg, #fff0e0 0%, #ffcfa3 100%); }
+  .scene-energy .scene-icon { background: rgba(255, 180, 100, 0.3); }
+  @media (max-width: 800px) {
+    .scene-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .scene-grid { grid-template-columns: 1fr; }
+  }
+
+  .visual-section {
+    background: var(--bg-dark);
+    color: #fff;
+    background-image:
+      radial-gradient(circle at 50% 50%, rgba(93, 211, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: auto, 32px 32px;
+  }
+  .visual-section .section-title { color: #fff; }
+  .visual-section .section-sub { color: rgba(255,255,255,0.6); }
+  .visual-section .section-eyebrow { color: var(--ring-blue); }
+  .visual-demo {
+    max-width: 360px;
+    margin: 0 auto 56px;
+    aspect-ratio: 9 / 16;
+    background: #050a14;
+    border-radius: 36px;
+    border: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+  }
+  .visual-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(93, 211, 255, 0.4) 0%, rgba(93, 211, 255, 0.05) 70%, transparent 100%);
+    border: 1.5px solid rgba(93, 211, 255, 0.5);
+    box-shadow: 0 0 60px rgba(93, 211, 255, 0.4);
+    animation: breathe 8s ease-in-out infinite;
+  }
+  .visual-phase {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    color: rgba(255,255,255,0.9);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  .habit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .habit-item { padding: 24px 16px; }
+  .habit-number {
+    font-size: 56px;
+    font-weight: 200;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .habit-item h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .habit-item p {
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+  @media (max-width: 700px) {
+    .habit-grid { grid-template-columns: 1fr; gap: 48px; }
+  }
+
+  .free-section {
+    background: var(--bg-alt);
+    background-image:
+      radial-gradient(circle at 50% 50%, rgba(0, 113, 227, 0.04) 0%, transparent 50%);
+  }
+  .free-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .free-item {
+    background: #fff;
+    padding: 28px 32px;
+    border-radius: 18px;
+    text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+  }
+  .free-item .check {
+    color: var(--accent);
+    font-size: 18px;
+    margin-right: 10px;
+  }
+  .free-item h4 {
+    display: inline;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .free-item p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .privacy-section {
+    background: var(--bg);
+    padding: 80px 24px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .privacy-section h3 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .privacy-section p {
+    color: var(--text-soft);
+    font-size: 16px;
+    max-width: 560px;
+    margin: 0 auto 24px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .privacy-section a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .privacy-section a:hover { text-decoration: underline; }
+
+  footer {
+    background: var(--bg-alt);
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .breath-ring, .visual-ring { animation: none; }
+    .fade-in { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand"><span class="dot"></span>Breathly</a>
+    <div class="nav-links">
+      <a href="#patterns">Techniques</a>
+      <a href="#scenes">Scenes</a>
+      <a href="#habit">Habit</a>
+      <a href="privacy_policy.html">Privacy</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="breath-ring"></div>
+  <h1>Breathe with ease,<br>find your calm</h1>
+  <p class="tagline">A minimalist breathing guide for modern life. Follow the gentle rhythm on screen. Let your heartbeat slow down, let your thoughts settle.</p>
+  <p class="hero-meta">Completely free · No sign-up · Data stays on your device</p>
+</div>
+
+<section id="patterns" class="patterns">
+  <div class="section-inner fade-in">
+    <div class="section-eyebrow">Backed by science</div>
+    <h2 class="section-title">Four proven techniques</h2>
+    <p class="section-sub">Each one comes from medical or psychological research — for stress, sleep, focus, or energy.</p>
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <div class="pattern-rhythm">4 — 7 — 8</div>
+        <h3>4-7-8 Breathing</h3>
+        <p>The "natural tranquilizer" popularized by Dr. Andrew Weil. Inhale 4, hold 7, exhale 8. A few rounds before bed helps you fall asleep faster.</p>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-rhythm">4 — 4 — 4 — 4</div>
+        <h3>Box Breathing</h3>
+        <p>The technique used by Navy SEALs to stay calm under pressure. Four equal 4-second phases — perfect before a speech, exam, or difficult meeting.</p>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-rhythm">5 — 5</div>
+        <h3>Coherent Breathing</h3>
+        <p>A balanced 5-second inhale and exhale that regulates heart rate variability. Ideal for everyday long-term practice.</p>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-rhythm">Custom</div>
+        <h3>Your Own Pattern</h3>
+        <p>Different lungs, different habits. Set your own inhale, hold, and exhale durations to find the rhythm that suits you best.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scenes">
+  <div class="section-inner fade-in">
+    <div class="section-eyebrow">No decision fatigue</div>
+    <h2 class="section-title">Four scenes, one tap to start</h2>
+    <p class="section-sub">Not sure which technique to use? We have pre-set the rhythm, duration, and color palette for each moment.</p>
+    <div class="scene-grid">
+      <div class="scene-card scene-sleep">
+        <div class="scene-icon">🌙</div>
+        <h4>Sleep</h4>
+        <p>4-7-8 rhythm · 10 min<br>Deep blue-violet, gentle drift</p>
+      </div>
+      <div class="scene-card scene-relax">
+        <div class="scene-icon">🌊</div>
+        <h4>Relax</h4>
+        <p>Box breathing · 5 min<br>Teal waves, release tension</p>
+      </div>
+      <div class="scene-card scene-focus">
+        <div class="scene-icon">🎯</div>
+        <h4>Focus</h4>
+        <p>Coherent rhythm · 3 min<br>Cool gray-blue, enter flow</p>
+      </div>
+      <div class="scene-card scene-energy">
+        <div class="scene-icon">⚡</div>
+        <h4>Energize</h4>
+        <p>Quick breathing · 2 min<br>Warm orange, shake off fatigue</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="visual-section">
+  <div class="section-inner fade-in">
+    <div class="section-eyebrow">Visual guidance</div>
+    <h2 class="section-title">Follow with your eyes closed</h2>
+    <p class="section-sub">A glowing ring expands and contracts in sync with your breath. Feel the rhythm in your peripheral vision — no need to stare at the screen.</p>
+    <div class="visual-demo">
+      <div class="visual-ring"></div>
+      <div class="visual-phase">Inhale</div>
+    </div>
+  </div>
+</section>
+
+<section id="habit">
+  <div class="section-inner fade-in">
+    <div class="section-eyebrow">Gentle companionship</div>
+    <h2 class="section-title">Turn breathing into a habit</h2>
+    <p class="section-sub">Not a burden — a gentle reminder. Every completed session is seen.</p>
+    <div class="habit-grid">
+      <div class="habit-item">
+        <div class="habit-number">∞</div>
+        <h4>History</h4>
+        <p>Every session logged automatically. Date, duration, and technique — fully recorded.</p>
+      </div>
+      <div class="habit-item">
+        <div class="habit-number">7d</div>
+        <h4>Streak</h4>
+        <p>A calendar heatmap shows your consistency at a glance. The streak counter keeps you going.</p>
+      </div>
+      <div class="habit-item">
+        <div class="habit-number">★</div>
+        <h4>Favorites</h4>
+        <p>Pin your most-used patterns to the home screen. Next time, just tap and breathe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="free-section">
+  <div class="section-inner fade-in">
+    <div class="section-eyebrow">Free forever</div>
+    <h2 class="section-title">Full version from the first tap</h2>
+    <p class="section-sub">No subscriptions, in-app purchases, or memberships. Every feature is available to every user.</p>
+    <div class="free-grid">
+      <div class="free-item">
+        <span class="check">✓</span><h4>All techniques</h4>
+        <p>4-7-8, Box, Coherent, and Custom — all free, all the time.</p>
+      </div>
+      <div class="free-item">
+        <span class="check">✓</span><h4>All scenes</h4>
+        <p>Sleep, Relax, Focus, Energize — one tap to begin.</p>
+      </div>
+      <div class="free-item">
+        <span class="check">✓</span><h4>History & streaks</h4>
+        <p>Complete session log, streak counter, and calendar heatmap.</p>
+      </div>
+      <div class="free-item">
+        <span class="check">✓</span><h4>No sign-up</h4>
+        <p>Open and use. No account, no email, no phone number.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="privacy-section">
+  <h3>Your breathing data belongs to you</h3>
+  <p>All your session history, custom patterns, favorites, and settings stay locally on your iPhone. Nothing is uploaded to any server.</p>
+  <a href="privacy_policy.html">Read the full privacy policy →</a>
+</section>
+
+<footer>
+  © 2026 Breathly: Deep Breathing · Breathe with ease, find your calm
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
