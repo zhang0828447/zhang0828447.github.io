@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuraWall — HD Wallpapers & Keyboard Themes</title>
+<style>
+  :root {
+    --bg: #090A12;
+    --bg-deep: #05060D;
+    --surface: #141622;
+    --surface-elevated: #1E2130;
+    --text: #F8FAFC;
+    --text-secondary: #A7ADBC;
+    --text-muted: #6B7280;
+    --accent: #8B7CF6;
+    --accent-soft: #A78BFA;
+    --border: rgba(138, 124, 246, 0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Top Navigation */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(9, 10, 18, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--text);
+  }
+  .brand-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    box-shadow: 0 0 12px rgba(139, 124, 246, 0.6);
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    padding: 140px 24px 120px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(139, 124, 246, 0.18) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    color: var(--accent-soft);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #A7ADBC 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-tagline {
+    font-size: clamp(20px, 2.4vw, 26px);
+    font-weight: 200;
+    color: var(--text);
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+  .hero-sub {
+    font-size: clamp(15px, 1.6vw, 18px);
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* Sections */
+  section.feature {
+    padding: 100px 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    color: var(--accent-soft);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .section-title {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.15;
+  }
+  .section-sub {
+    font-size: clamp(16px, 1.7vw, 19px);
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 64px;
+    line-height: 1.7;
+  }
+
+  /* Feature Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 36px 32px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(139, 124, 246, 0.4);
+  }
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(139, 124, 246, 0.18), rgba(139, 124, 246, 0.06));
+    border: 1px solid rgba(139, 124, 246, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: var(--accent-soft);
+  }
+  .card-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .card p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* Highlight band */
+  .band {
+    background: var(--bg-deep);
+    padding: 120px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .band::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(45deg, rgba(139, 124, 246, 0.04) 1px, transparent 1px),
+      linear-gradient(-45deg, rgba(139, 124, 246, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .band-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 880px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .band h2 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    line-height: 1.15;
+    background: linear-gradient(180deg, #FFFFFF 0%, #A78BFA 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .band p {
+    font-size: clamp(16px, 1.7vw, 19px);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 32px;
+    max-width: 880px;
+    margin: 80px auto 0;
+    position: relative;
+    z-index: 1;
+  }
+  .stat {
+    text-align: center;
+    padding: 24px;
+  }
+  .stat-num {
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--accent-soft);
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 60px 24px 40px;
+    background: var(--bg-deep);
+  }
+  .footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .footer-brand {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--accent-soft); }
+  .copyright {
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* Fade-in animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero { padding: 100px 20px 80px; }
+    section.feature { padding: 80px 20px; }
+    .band { padding: 90px 20px; }
+    .nav-links { gap: 18px; }
+    .nav-links a { font-size: 13px; }
+    .card { padding: 28px 24px; }
+    .footer-links { gap: 18px; }
+  }
+  @media (max-width: 480px) {
+    .nav-links a:not(.primary) { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><span class="brand-dot"></span>AuraWall</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#experience">Experience</a>
+      <a href="privacy_policy.html">Privacy</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow reveal">HD Wallpapers · Custom Keyboard</div>
+    <h1 class="reveal">A new look,<br>every time you wake the screen.</h1>
+    <p class="hero-tagline reveal">Thousands of curated wallpapers. One tap to set.</p>
+    <p class="hero-sub reveal">AuraWall brings together high-resolution wallpapers across anime, nature, cityscapes, neon, and minimal styles — plus a custom keyboard theme that matches your mood.</p>
+  </div>
+</header>
+
+<section class="feature" id="features">
+  <div class="section-eyebrow reveal">Features</div>
+  <h2 class="section-title reveal">Everything you need<br>to personalize your screen.</h2>
+  <p class="section-sub reveal">Built natively for Android. Designed to feel effortless, fast, and quietly beautiful.</p>
+
+  <div class="grid">
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <h3>Daily wallpaper feed</h3>
+      <p>A curated waterfall grid refreshed every day, with style tags like Today, Calm, Neon, and Nature so the right image is always one tap away.</p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg>
+      </div>
+      <h3>Curated channels</h3>
+      <p>Browse featured channels and themed series organized by style, topic, and mood. Cut through the noise and reach exactly what you want.</p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <h3>Favorites &amp; history</h3>
+      <p>Save wallpapers with one tap and revisit recently viewed items in a tidy personal gallery. Your collection lives on your device.</p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+      </div>
+      <h3>One-tap wallpaper setup</h3>
+      <p>Open a full-resolution preview, then set the image as your lock screen, home screen, or both — with a friendly guide for first-time users.</p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      </div>
+      <h3>Smart offline mode</h3>
+      <p>Wallpapers you have already viewed are cached on device, so they stay available even without a connection. Clear status indicators and a single retry tap keep things smooth.</p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></svg>
+      </div>
+      <h3>Custom keyboard themes</h3>
+      <p>An integrated input method lets you load and apply keyboard themes that stay in sync with your wallpaper style across every interaction.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="experience">
+  <div class="band-inner">
+    <div class="section-eyebrow reveal" style="color: var(--accent-soft);">The experience</div>
+    <h2 class="reveal">Designed to disappear,<br>so the wallpaper can speak.</h2>
+    <p class="reveal">A dark, high-contrast interface lets every color shine at its purest. Smart caching keeps your favorites available even offline, with clear status indicators and a single retry tap when the network stumbles.</p>
+
+    <div class="stats">
+      <div class="stat reveal">
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Style channels</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">HD</div>
+        <div class="stat-label">Resolution</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Offline ready</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Account needed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">AuraWall</div>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#experience">Experience</a>
+      <a href="privacy_policy.html">Privacy Policy</a>
+    </div>
+    <div class="copyright">© 2026 AuraWall. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    var reveals = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      reveals.forEach(function(el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(function(el, i) {
+      el.style.transitionDelay = (Math.min(i, 6) * 60) + 'ms';
+      io.observe(el);
+    });
+  })();
+</script>
+
+</body>
+</html>
