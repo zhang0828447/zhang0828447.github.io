@@ -123,7 +123,10 @@ pubmatic.com, 160318, RESELLER, 5d62403b186f2ace
 rubiconproject.com, 28169, RESELLER, 0bfd66d529a55807
 openx.com, 561446248, RESELLER, 6a698e2ec38604c6
 
-#vungle face
+
+
+
+#vungle----FocusIsle Flow
 # app-ads.txt for FocusIsle
 # This file authorizes ad sellers for this application.
 # Format: <ad_system_domain>, <publisher_account_id>, <relationship>, <certification_authority_id>
