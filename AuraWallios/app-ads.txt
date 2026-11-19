@@ -361,3 +361,15 @@ zmaticoo.com,5135063,RESELLER
 zmaticoo.com,5135224,RESELLER
 zmaticoo.com,5135302,RESELLER
 zoomd.com,88478941,RESELLER
+
+
+
+
+
+
+
+
+
+
+#AuraWall - wallpaper---ios--com.studio.aura.wall.hd
+google.com, pub-8251591431373449, DIRECT, f08c47fec0942fa0
